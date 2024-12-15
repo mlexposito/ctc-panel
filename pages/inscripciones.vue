@@ -5,6 +5,7 @@
 
   <div class="p-8">
     <DataTable
+      ref="dt"
       v-model:filters="filters"
       :value="registrations"
       paginator
@@ -19,6 +20,13 @@
               @click="refreshRegistrations()"
               severity="help"
               :loading="pending"
+              rounded
+              raised
+            />
+            <Button
+              icon="pi pi-file-excel"
+              @click="exportToCSV()"
+              severity="success"
               rounded
               raised
             />
@@ -116,6 +124,11 @@ import Dialog from "primevue/dialog";
 
 const confirm = useConfirm();
 const toast = useToast();
+const dt = ref();
+
+const exportToCSV = () => {
+  dt.value.exportCSV();
+};
 
 const confirmDelete = (entryId: number) =>
   confirm.require({

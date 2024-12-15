@@ -1,5 +1,18 @@
 <template>
-  <DataTable :value="alojamiento" :loading="pending">
+  <DataTable ref="dt" :value="alojamiento" :loading="pending">
+    <template #header>
+      <div class="flex justify-between">
+        <div class="flex gap-2 items-center">
+          <Button
+            icon="pi pi-file-excel"
+            @click="exportToCSV()"
+            severity="success"
+            rounded
+            raised
+          />
+        </div>
+      </div>
+    </template>
     <Column field="id" header="ID"></Column>
     <Column field="tipo" header="Tipo"></Column>
     <Column field="nombre" header="Nombre"></Column>
@@ -23,6 +36,11 @@ const opcionesAlojamiento = [
 const store = useRegistrationsStore();
 await store.fetchRegistrations();
 const { registrations, pending } = storeToRefs(store);
+const dt = ref();
+
+const exportToCSV = () => {
+  dt.value.exportCSV();
+};
 
 const alojamiento = computed(() => {
   return registrations.value
